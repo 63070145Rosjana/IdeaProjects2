@@ -43,14 +43,23 @@ public class CashierView extends FormLayout {
         tfOne.setPlaceholder("$1:");
 
         VerticalLayout vl = new VerticalLayout();
-        vl.add(tfMoney, btnCal, tfOnetho, tfFivehun,tfOne, tfTwenty, tfTen, tFive, tfOne);
+        vl.add(tfMoney, btnCal, tfOnetho, tfFivehun,tfOnehun, tfTwenty, tfTen, tFive, tfOne);
         this.add(vl);
         btnCal.addClickListener(event ->{
             Integer num1 = Integer.valueOf(tfMoney.getValue());
-
-            String out = WebClient.create().get().uri("http://localhost:8080/getChange/"+num1)
-                    .retrieve().bodyToMono(String.class).block();
-            tfOnetho.setValue(out);
+            Change out = WebClient.create()
+                    .get()
+                    .uri("http://localhost:8080/getChange/"+num1)
+                    .retrieve()
+                    .bodyToMono(Change.class)
+                    .block();
+            tfOnetho.setValue(String.valueOf(out.getB1000()));
+            tfFivehun.setValue(String.valueOf(out.getB500()));
+            tfOnehun.setValue(String.valueOf(out.getB100()));
+            tfTwenty.setValue(String.valueOf(out.getB20()));
+            tfTen.setValue(String.valueOf(out.getB10()));
+            tFive.setValue(String.valueOf(out.getB5()));
+            tfOne.setValue(String.valueOf(out.getB1()));
         });
     }
 }
