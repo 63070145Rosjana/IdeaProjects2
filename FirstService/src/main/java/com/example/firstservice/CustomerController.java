@@ -11,7 +11,7 @@ public class CustomerController{
 
     public CustomerController() {
         customers = new ArrayList<>();
-        customers.add(new Customer("101", "Joh" , "Male", 25));
+        customers.add(new Customer("101", "John" , "Male", 25));
         customers.add(new Customer("1018", "Peter", "Male", 24));
         customers.add(new Customer("1019", "Sara", "Female", 23));
         customers.add(new Customer("1110", "Rose", "Female", 23));
