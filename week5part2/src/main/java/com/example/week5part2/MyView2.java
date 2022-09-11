@@ -22,8 +22,24 @@ public class MyView2 extends FormLayout {
     private ComboBox<String> labelComboBox1;
     private ComboBox<String> labelComboBox2;
 
-    private TextField tfOne;
-    private TextField tfTwo;
-    private TextField tfThree;
-    private TextField tfFour;
+
+    public MyView2(){
+        btnAddGood = new Button("Add Good Words");
+        btnAddBad = new Button("Add Bad Words");
+        btnAddSen = new Button("Add Sentence");
+        btnShowSen = new Button("Show Sentence");
+        tfAddWord = new TextField();
+        tfAddSen = new TextField();
+        tfShowGood = new TextField();
+        tfShowBad = new TextField();
+        labelComboBox1 = new ComboBox<>();
+        labelComboBox2 = new ComboBox<>();
+
+        tfAddWord.setLabel("Add word");
+        tfAddSen.setLabel("Add Sentence");
+        tfShowGood.setLabel("Good Sentences");
+        tfShowBad.setLabel("Bad Sentences");
+        labelComboBox1.setLabel("Good Words");
+        labelComboBox2.setLabel("Bad Words");
+    }
 }
