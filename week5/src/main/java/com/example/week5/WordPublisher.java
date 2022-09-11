@@ -28,5 +28,22 @@ public class WordPublisher {
         this.words.badWords.remove(keep);
         return words.badWords;
     }
+    @RequestMapping(value = "/addGood/{s}", method = RequestMethod.GET)
+    public ArrayList<String> addGoodWord(@PathVariable("s") String s){
+        this.words.goodWords.add(s);
+        return words.goodWords;
+    }
+    @RequestMapping(value = "/delGood/{s}", method = RequestMethod.DELETE)
+    public ArrayList<String> deleteGoodWord(@PathVariable("s") String s){
+        String keep = "";
+        for (String word: words.goodWords) {
+            System.out.println(word);
+            if (word.equals(s)) {
+                keep = word;
+            }
+        }
+        this.words.goodWords.remove(keep);
+        return words.goodWords;
+    }
 
 }
