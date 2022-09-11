@@ -16,5 +16,17 @@ public class WordPublisher {
         this.words.badWords.add(s);
         return words.badWords;
     }
+    @RequestMapping(value = "/delBad/{s}", method = RequestMethod.DELETE)
+    public ArrayList<String> deleteBadWord(@PathVariable("s") String s){
+        String keep = "";
+        for (String word: words.badWords) {
+            System.out.println(word);
+            if (word.equals(s)) {
+                keep = word;
+            }
+        }
+        this.words.badWords.remove(keep);
+        return words.badWords;
+    }
 
 }
