@@ -15,7 +15,9 @@ public class Publisher03 {
     @RequestMapping(value = "/queueUp/{name}", method = RequestMethod.GET)
     public String queueUp(@PathVariable("name") String name){
         System.out.println("Publisher In : " + name );
-        rabbitTemplate.convertAndSend("MyFanoutExchange","",name);
+//        rabbitTemplate.convertAndSend("MyFanoutExchange","orange.computer.ant.tv",name);
+
+        rabbitTemplate.convertAndSend("MyTopicExchange","orange.computer.ant.tv",name);
         return "Success";
     }
 }
