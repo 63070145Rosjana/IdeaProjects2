@@ -84,5 +84,10 @@ public class WordPublisher {
 
         return keepgood;
     }
+    @RequestMapping(value = "/getSentence", method = RequestMethod.GET)
+    public SentenceConsumer getSentence(){
+        SentenceConsumer a = new SentenceConsumer();
+        return a;
+    }
 
 }
