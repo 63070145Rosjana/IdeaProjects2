@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 @Service
-@RestController
+
 public class SentenceConsumer {
+
     protected Sentence sentences = new Sentence();
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    public Sentence senn;
+
 
     @RabbitListener(queues = "GoodWordQueue")
     public void addGoodSentence(String s){
@@ -32,12 +33,7 @@ public class SentenceConsumer {
         System.out.println("In addBadSentence Method: "+ sentences.badSentences);
     }
     @RabbitListener(queues = "GetQueue")
-
-    public Sentence getSentences() {
-//        rabbitTemplate.convertAndSend("DirectExchange","getqueue", "");
-
-        System.out.println(this.sentences);
-//        return null;
-        return sentences;
+    public Sentence getSentences(){
+        return this.sentences;
     }
 }

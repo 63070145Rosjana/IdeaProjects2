@@ -86,11 +86,8 @@ public class WordPublisher {
     }
     @RequestMapping(value = "/getSentence", method = RequestMethod.GET)
     public Sentence getSentence(){
-        rabbitTemplate.convertAndSend("DirectExchange","getqueue", "");
-
-
-        return null;
-
+        Object sentence = rabbitTemplate.convertSendAndReceive("DirectExchange","queue", "");
+        return (Sentence) sentence;
     }
 
 }

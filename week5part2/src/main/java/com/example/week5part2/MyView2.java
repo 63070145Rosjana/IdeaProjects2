@@ -8,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import io.netty.util.internal.StringUtil;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
@@ -90,14 +91,30 @@ public class MyView2 extends FormLayout {
             new Notification(out , 5000).open();
 
         });
-        btnShowSen.addClickListener(event ->{
-           Sentence out = WebClient.create().get().uri("http://localhost:8080/getSentence/")
-                    .retrieve().bodyToMono(Sentence.class).block();
-//            String out2 = WebClient.create().get().uri("http://localhost:8080/getSentence/")
-//                    .retrieve().bodyToMono(String.class).block();
-//            tfShowGood.setValue(out);
-            System.out.println(out);
+        btnShowSen.addClickListener(buttonClickEvent -> {
+            Sentence out = WebClient.create()
+                    .get()
+                    .uri("http://localhost:8080/getSentence")
+                    .retrieve()
+                    .bodyToMono(Sentence.class)
+                    .block();
+
+
+
+            tfShowGood.setValue(String.valueOf(out.goodSentences));
+            tfShowBad.setValue(String.valueOf(out.badSentences));
+//            tfShowBad.setValue("["+bad+"]");
         });
+
+
+//        btnShowSen.addClickListener(event ->{
+//           Sentence out = WebClient.create().get().uri("http://localhost:8080/getSentence/")
+//                    .retrieve().bodyToMono(Sentence.class).block();
+////            String out2 = WebClient.create().get().uri("http://localhost:8080/getSentence/")
+////                    .retrieve().bodyToMono(String.class).block();
+////            tfShowGood.setValue(out);
+//            System.out.println(out);
+//        });
 
         labelComboBox1.setItems(words.goodWords);
         labelComboBox2.setItems(words.badWords);

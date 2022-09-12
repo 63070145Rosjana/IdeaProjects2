@@ -1,8 +1,9 @@
 package com.example.week5part2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Word {
+public class Word  {
     public ArrayList<String> badWords = new ArrayList<>();
     public ArrayList<String> goodWords = new ArrayList<>();
     public Word(){
@@ -12,4 +13,5 @@ public class Word {
         goodWords.add("enjoy");
         goodWords.add("life");
     }
+
 }
