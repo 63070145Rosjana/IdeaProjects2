@@ -7,6 +7,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
 
 @Route(value = "index2")
 public class MyView2 extends FormLayout {
@@ -23,7 +26,8 @@ public class MyView2 extends FormLayout {
     //คอมโบสามารถsetlabelได้
     private ComboBox<String> labelComboBox1;
     private ComboBox<String> labelComboBox2;
-
+    protected  Word words = new Word();
+    protected WordPublisher wp = new WordPublisher();
 
     public MyView2() {
 
@@ -63,6 +67,31 @@ public class MyView2 extends FormLayout {
         vl2.add(tfAddSen, btnAddSen, tfShowGood, tfShowBad, btnShowSen);
         hl.add(vl1, vl2);
         this.add(hl);
+
+        btnAddGood.addClickListener(event ->{
+            String good = tfAddWord.getValue();
+            ArrayList<String> out = WebClient.create().get().uri("http://localhost:8080/addGood/"+good)
+                    .retrieve().bodyToMono(ArrayList.class).block();
+            labelComboBox1.setItems(out);
+        });
+        btnAddBad.addClickListener(event ->{
+            String bad= tfAddWord.getValue();
+            ArrayList<String> out = WebClient.create().get().uri("http://localhost:8080/addBad/"+bad)
+                    .retrieve().bodyToMono(ArrayList.class).block();
+            labelComboBox2.setItems(out);
+            System.out.println(bad);
+        });
+        btnAddSen.addClickListener(event ->{
+            String sentence = tfAddSen.getValue();
+            System.out.println(sentence);
+        });
+        btnShowSen.addClickListener(event ->{
+
+            System.out.println("good");
+        });
+
+        labelComboBox1.setItems(words.goodWords);
+        labelComboBox2.setItems(words.badWords);
 
     }
 }
