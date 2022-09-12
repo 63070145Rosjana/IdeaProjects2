@@ -1,15 +1,19 @@
 package com.example.week5part2;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Service
 @RestController
 public class SentenceConsumer {
     protected Sentence sentences = new Sentence();
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    public Sentence senn;
+
     @RabbitListener(queues = "GoodWordQueue")
     public void addGoodSentence(String s){
         this.sentences.goodSentences.add(s);
@@ -28,7 +32,12 @@ public class SentenceConsumer {
         System.out.println("In addBadSentence Method: "+ sentences.badSentences);
     }
     @RabbitListener(queues = "GetQueue")
+
     public Sentence getSentences() {
-        return this.sentences;
+//        rabbitTemplate.convertAndSend("DirectExchange","getqueue", "");
+
+        System.out.println(this.sentences);
+//        return null;
+        return sentences;
     }
 }

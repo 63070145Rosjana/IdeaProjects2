@@ -15,7 +15,7 @@ public class WordPublisher {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @RequestMapping(value = "/addBad/{s}", method = RequestMethod.GET)
+    @RequestMapping(value = "/addBad/{s}", method = RequestMethod.POST)
     public ArrayList<String> addBadWord(@PathVariable("s") String s){
         this.words.badWords.add(s);
         return words.badWords;
@@ -32,7 +32,7 @@ public class WordPublisher {
         this.words.badWords.remove(keep);
         return words.badWords;
     }
-    @RequestMapping(value = "/addGood/{s}", method = RequestMethod.GET)
+    @RequestMapping(value = "/addGood/{s}", method = RequestMethod.POST)
     public ArrayList<String> addGoodWord(@PathVariable("s") String s){
         this.words.goodWords.add(s);
         return words.goodWords;
@@ -50,7 +50,7 @@ public class WordPublisher {
         this.words.goodWords.remove(keep);
         return words.goodWords;
     }
-    @RequestMapping(value = "/proof/{sentence}", method = RequestMethod.GET)
+    @RequestMapping(value = "/proof/{sentence}", method = RequestMethod.POST)
     public String proofSentence(@PathVariable("sentence") String s){
         String keepgood = "false";
         String keepbad = "false";
@@ -85,9 +85,12 @@ public class WordPublisher {
         return keepgood;
     }
     @RequestMapping(value = "/getSentence", method = RequestMethod.GET)
-    public SentenceConsumer getSentence(){
-        SentenceConsumer a = new SentenceConsumer();
-        return a;
+    public Sentence getSentence(){
+        rabbitTemplate.convertAndSend("DirectExchange","getqueue", "");
+
+
+        return null;
+
     }
 
 }
