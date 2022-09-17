@@ -28,4 +28,14 @@ public class WizardService {
     public Wizard createWizard(Wizard wizard){
         return repository.save(wizard);
     }
+    public Wizard updateWizard(Wizard wizard){
+        return repository.save(wizard);
+    }
+    public Wizard retrieveWizardByName(String name) {
+        return repository.findByName(name);
+    }
+    public boolean deleteWizard(Wizard wizard) {
+        try { repository.delete(wizard); return true; }
+        catch (Exception e){ return false;}
+    }
 }

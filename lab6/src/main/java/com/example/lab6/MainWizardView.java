@@ -39,6 +39,7 @@ public class MainWizardView extends FormLayout {
     private Integer keep=1;
     private Integer keep2=1;
     private Integer check = -1 ;
+    private String nameold = "";
     @Autowired
     private WizardService wizardService;
 
@@ -87,14 +88,21 @@ public class MainWizardView extends FormLayout {
             else if(this.number == 0 && this.check != 0){
                 this.number = n;
             }
-            else if(this.check == 1){
+            else if(this.check == 1 ){
                 this.number -= 2;
+            }
+            if(this.number == n+1){
+                this.number = 0;
+            }
+            else  if(this.number < 0){
+                this.number = n;
             }
             this.check = 0;
             ObjectMapper mapper = new ObjectMapper();
             Wizard wizard = mapper.convertValue(out.get(this.number), Wizard.class);
             System.out.println("ลบ"+this.number);
             this.number = this.number-this.keep;
+            this.nameold = wizard.getName();
             tfFn.setValue(wizard.getName());
             tfDl.setValue(String.valueOf(wizard.getMoney()));
             labelComboBox1.setValue(wizard.getPosition());
@@ -123,13 +131,19 @@ public class MainWizardView extends FormLayout {
             } else if (this.check == 0) {
                 this.number +=2;
             }
+            if(this.number == n+1){
+                this.number = 0;
+            }
+            else  if(this.number < 0){
+                this.number = n;
+            }
             this.check = 1;
 
             Wizard wizard = mapper.convertValue(out.get(this.number), Wizard.class);
             System.out.println("บวก" +this.number);
             this.number = this.number+this.keep2;
 
-
+            this.nameold = wizard.getName();
             tfFn.setValue(wizard.getName());
             tfDl.setValue(String.valueOf(wizard.getMoney()));
             labelComboBox1.setValue(wizard.getPosition());
@@ -152,6 +166,51 @@ public class MainWizardView extends FormLayout {
                     .bodyToMono(Wizard.class)
                     .block();
             new Notification("Wizard has bee create", 5000).open();
+
+        });
+        btn3.addClickListener(event ->{
+            System.out.println(this.nameold);
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("namenew", tfFn.getValue());
+            formData.add("nameold", this.nameold);
+            formData.add("money", tfDl.getValue());
+            formData.add("sex", rd1.getValue());
+            formData.add("position", labelComboBox1.getValue());
+            formData.add("school", labelComboBox2.getValue());
+            formData.add("house", labelComboBox3.getValue());
+
+            Boolean out = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/updateWizard")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+
+            new Notification("Wizard has bee update", 5000).open();
+
+        });
+        btn4.addClickListener(event ->{
+            System.out.println(this.nameold);
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("name", tfFn.getValue());
+            formData.add("money", tfDl.getValue());
+            formData.add("sex", rd1.getValue());
+            formData.add("position", labelComboBox1.getValue());
+            formData.add("school", labelComboBox2.getValue());
+            formData.add("house", labelComboBox3.getValue());
+
+            Boolean out = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/deleteWizard")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+
+            new Notification("Wizard has bee Delete", 5000).open();
 
         });
     }

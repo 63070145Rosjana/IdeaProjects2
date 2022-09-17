@@ -1,6 +1,7 @@
 package com.example.lab6;
 
 
+//import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -47,7 +48,6 @@ public class Wizard {
 
     public String getName() {
         return name;
-
     }
 
     public void setName(String name) {
