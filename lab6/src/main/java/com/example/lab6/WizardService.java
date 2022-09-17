@@ -25,4 +25,7 @@ public class WizardService {
         System.out.println(count);
         return count;
     }
+    public Wizard createWizard(Wizard wizard){
+        return repository.save(wizard);
+    }
 }
