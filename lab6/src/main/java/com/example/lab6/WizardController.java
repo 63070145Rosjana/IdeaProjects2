@@ -38,6 +38,7 @@ public class WizardController {
         String house = d.get("house");
         Integer money = Integer.parseInt(d.get("money"));
         String position = d.get("position");
+
         if(wizard != null){
             wizardService.updateWizard(new Wizard(id, sex, name, school, house, money, position));
             return true;

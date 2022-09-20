@@ -156,6 +156,12 @@ public class MainWizardView extends FormLayout {
             }
         });
         btn2.addClickListener(event ->{
+            if(rd1.getValue().equals("male")){
+                rd1.setValue("m");
+
+            }else if(rd1.getValue().equals("female")){
+                rd1.setValue("f");
+            }
             Wizard formData = new Wizard(null, rd1.getValue(), tfFn.getValue(), labelComboBox2.getValue(), labelComboBox3.getValue(), Integer.valueOf(tfDl.getValue()), labelComboBox1.getValue());
 
             Wizard out = WebClient.create()
@@ -165,11 +171,22 @@ public class MainWizardView extends FormLayout {
                     .retrieve()
                     .bodyToMono(Wizard.class)
                     .block();
+            if(rd1.getValue().equals("m")){
+                rd1.setValue("male");
+            }else{
+                rd1.setValue("female");
+            }
             new Notification("Wizard has bee create", 5000).open();
 
         });
         btn3.addClickListener(event ->{
             System.out.println(this.nameold);
+            if(rd1.getValue().equals("male") || rd1.getValue().equals("m")){
+                rd1.setValue("m");
+
+            }else if(rd1.getValue().equals("female") || rd1.getValue().equals("f")){
+                rd1.setValue("f");
+            }
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("namenew", tfFn.getValue());
             formData.add("nameold", this.nameold);
@@ -178,7 +195,11 @@ public class MainWizardView extends FormLayout {
             formData.add("position", labelComboBox1.getValue());
             formData.add("school", labelComboBox2.getValue());
             formData.add("house", labelComboBox3.getValue());
-
+            if(rd1.getValue().equals("m")){
+                rd1.setValue("male");
+            }else{
+                rd1.setValue("female");
+            }
             Boolean out = WebClient.create()
                     .post()
                     .uri("http://localhost:8080/updateWizard")
@@ -187,8 +208,8 @@ public class MainWizardView extends FormLayout {
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
-
             new Notification("Wizard has bee update", 5000).open();
+
 
         });
         btn4.addClickListener(event ->{
