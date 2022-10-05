@@ -8,7 +8,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 
 @Route(value = "index2")
@@ -25,6 +30,8 @@ public class ProductView extends FormLayout {
 
 
     private ComboBox cb;
+    private String oldname;
+
 
     public ProductView() {
         add = new Button("Add Product");
@@ -78,6 +85,49 @@ public class ProductView extends FormLayout {
             }
 
         });
+        add.addClickListener(event ->{
+            Double num1 = pdc.getValue();
+            Double num2 = pdprofit.getValue();
+            String out = WebClient.create().get().uri("http://localhost:8080/getPrice/"+num1+"/"+num2)
+                        .retrieve().bodyToMono(String.class).block();
+            pdprice.setValue(Double.valueOf(out));
+            Double num3 = pdprice.getValue();
+            String name = pdn.getValue();
+            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+            formData.add("pdc", String.valueOf(num1));
+            formData.add("pdpro", String.valueOf(num2));
+            formData.add("pdprice", String.valueOf(num3));
+            formData.add("name", name);
+            Boolean out2 = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/add")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(formData))
+                    .retrieve()
+                    .bodyToMono(Boolean.class)
+                    .block();
+
+            System.out.println(out2);
+
+        });
+        update.addClickListener(event ->{
+            Double num1 = pdc.getValue();
+            Double num2 = pdprofit.getValue();
+            String out = WebClient.create().get().uri("http://localhost:8080/getPrice/"+num1+"/"+num2)
+                    .retrieve().bodyToMono(String.class).block();
+            pdprice.setValue(Double.valueOf(out));
+            Double num3 = pdprice.getValue();
+            String name = pdn.getValue();
+            String out = WebClient.create()
+                    .post()
+                    .uri("http://localhost:8080/updateProduct")
+                    .body(Mono.just(new Product(this.id, name, num1, num2, num3)), Product.class)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+        });
+
 
 
     }
